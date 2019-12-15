@@ -1,0 +1,3 @@
+[submodule "lib/CMMC-Legend"]
+	path = lib/CMMC-Legend
+	url = https://github.com/cmmakerclub/CMMC-Legend.git
