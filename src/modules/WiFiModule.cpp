@@ -3,23 +3,13 @@
 
 // extern LCDModule* lcdModule;
 
-#include "Adafruit_GFX.h"
-#include "Adafruit_ILI9341.h"
-
-extern Adafruit_ILI9341 tft;
 extern int LOCKING;
-extern bool sponsoring;
 void WiFiModule::isLongPressed() {
   if (digitalRead(37) == LOW) {
     uint32_t pressed_start = millis();
     while(digitalRead(37) == LOW) {
       if (millis() - pressed_start > 2000) {
           LOCKING = true;
-          tft.fillScreen(0x0000);
-          tft.setTextSize(2);
-          tft.fillRect(0, 0, 480, 320, ILI9341_BLACK);
-          tft.setCursor(0, 0);
-          tft.print("Release the button.");
         while(digitalRead(37) == LOW) {
           delay(10);
         }
@@ -138,8 +128,6 @@ void WiFiModule::configWebServer()
   //     tft.println();
   //
    WiFiEventId_t eventID = WiFi.onEvent([&](WiFiEvent_t event, WiFiEventInfo_t info){
-     tft.setCursor(8, 200);
-    tft.println("WiFi Connected.");
     Serial.println("WiFi Connected.");
     // File f = SPIFFS.open("/enabled", "a+");
     // f.close()
@@ -193,22 +181,9 @@ void WiFiModule::_init_sta()
 
   int counter = 0;
   int prev_ms = millis();
-    if (!sponsoring) {
-      tft.setTextSize(2);
-      tft.fillRect(3, 4, 310, 40, ILI9341_BLUE);
-      Serial.printf("Connecting to %s:%s, status=%d\r\n", sta_ssid, sta_pwd, WiFi.status());
-      tft.setCursor(5, 5);
-      tft.setTextColor(ILI9341_WHITE);
-      tft.print("Connecting to (WiFi)");
-      tft.print(" ");
-      // tft.fillRect(250, 4, 60, 26, ILI9341_RED); // for time
-      // tft.print(millis()/1000);
-      // tft.print("s");
-      tft.setCursor(5, 25);
-      // tft.setTextColor(ILI9341_RED);
-      tft.print(" > ");
-      tft.print(sta_ssid);
-  }
+  //   if (!sponsoring) {
+  //     Serial.printf("Connecting to %s:%s, status=%d\r\n", sta_ssid, sta_pwd, WiFi.status());
+  // }
 
   while (WiFi.status() != WL_CONNECTED)
   {
@@ -221,7 +196,6 @@ void WiFiModule::_init_sta()
   __wifi_connected = true;
   Serial.println("WiFi Connected.");
   __wifi_connected = true;
-  tft.fillRect(3, 4, 310, 40, ILI9341_DARKGREEN);
 }
 
 
